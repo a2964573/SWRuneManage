@@ -2,6 +2,59 @@
   margin: 0;
   padding: 0;
 }
-body {
+html {
   font-size: 62.5%;
+}
+.rune-list-container {
+  width: 95%;
+  margin: auto;
+  padding: 2rem;
+  display: grid;
+  flex-direction: column;
+  list-style: none;
+  text-align: center;
+  gap: 1rem;
+  letter-spacing: -0.1rem;
+}
+
+@media screen and (min-width: 500px) and (max-width: 764px) {
+  .rune-list-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 765px) and (max-width: 1280px) {
+  .rune-list-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (min-width: 1281px) {
+  .rune-list-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card span {
+  font-size: 1.3rem;
+}
+.card span:nth-child(3) {
+  grid-area: 2/2/3/3;
+}
+.card span:nth-child(4) {
+  grid-area: 2/3/3/4;
+}
+.card span:nth-child(5) {
+  grid-area: 3/2/3/3;
+}
+.card span:nth-child(6) {
+  grid-area: 3/3/4/4;
+}
+.card span:nth-child(7) {
+  grid-area: 4/2/5/3;
+}
+.card span:nth-child(8) {
+  grid-area: 4/3/5/4;
 }

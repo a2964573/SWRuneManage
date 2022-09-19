@@ -31,7 +31,6 @@ function paresJson(file, setFile, setCheck) {
   reader.onload = (event) => {
     setFile(JSON.parse(event.target.result));
     setCheck(true);
-    console.log(JSON.parse(event.target.result));
   };
 }
 
