@@ -42,8 +42,8 @@ const optionList = [
   { id: 5, title: "방어력+" },
   { id: 6, title: "방어력+" },
   { id: 8, title: "공격속도+" },
-  { id: 9, title: "치명피해+" },
-  { id: 10, title: "치명확률+" },
+  { id: 9, title: "치명확률+" },
+  { id: 10, title: "치명피해+" },
   { id: 11, title: "효과저항+" },
   { id: 12, title: "효과적중+" },
 ];
