@@ -4,7 +4,7 @@ function FormFileExample(props) {
   return (
     <>
       <Form.Group controlId="formFileSm" className="mb-3">
-        <InputGroup className="mb-3">
+        <InputGroup className="mb-3" style={{ width: "100%" }}>
           <Form.Control
             type="file"
             onChange={(event) => {

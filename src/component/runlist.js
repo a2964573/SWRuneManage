@@ -1,9 +1,13 @@
-import { Card } from "react-bootstrap";
+import { useState } from "react";
+import { Card, Form, Pagination } from "react-bootstrap";
 import { prefixList, setList, optionList } from "./data.js";
 
 function HorizontalResponsiveExample(props) {
+  const [view, setView] = useState(10);
+  const [page, setPage] = useState(1);
   let runeList = [];
   let list = [];
+  let pageControl = [];
 
   if (props.check) {
     props.file.runes.forEach((element) => {
@@ -15,46 +19,135 @@ function HorizontalResponsiveExample(props) {
       }
     });
     runeList.sort((a, b) => a.set_id - b.set_id);
-    runeList.forEach((element) => {
-      list.push(
-        <li key={element.rune_id}>
-          <Card
-            style={{
-              display: "grid",
-              gridTemplateColumns: " 4rem repeat(2, 1fr)",
-              gridTemplateRows: "4rem repeat(3, 2.5rem)",
-              alignItems: "center",
-              textAlign: "left",
-              minWidth: "21rem",
-            }}>
-            <Card.Img
-              variant="top"
-              src={`./image/rune-image-${element.set_id}.png`}
-              style={{ width: "4rem" }}
-            />
-            <Card.Title
-              style={{
-                fontSize: "1.4rem",
-                fontWeight: "bold",
-                gridArea: "1/2/2/4",
-              }}>
-              {findRuneTitle(element)}
-            </Card.Title>
-            <span>{pri_prefixFunc(element.pri_eff)}</span>
-            <span>
-              {element.prefix_eff[1] ? (
-                pri_prefixFunc(element.prefix_eff)
-              ) : (
-                <></>
-              )}
-            </span>
-            {secEffFunc(element.sec_eff)}
-          </Card>
-        </li>
+
+    let totalPage = Math.ceil(runeList.length / view);
+    let pageGroup = Math.ceil(page / 10);
+
+    var pageGroupLast = pageGroup * 10;
+    if (totalPage < pageGroupLast) {
+      pageGroupLast = totalPage;
+    }
+    var pageGroupFirst =
+      pageGroupLast % 10 === 0
+        ? pageGroupLast - (10 - 1)
+        : pageGroupLast - ((pageGroupLast % 10) - 1);
+
+    for (let i = pageGroupFirst; i <= pageGroupLast; i++) {
+      pageControl.push(
+        <Pagination.Item
+          key={i}
+          onClick={() => {
+            setPage(i);
+          }}>
+          {i}
+        </Pagination.Item>
       );
+    }
+    runeList.forEach((element, index) => {
+      if ((page - 1) * view < index && index <= page * view) {
+        list.push(
+          <li key={element.rune_id}>
+            <Card
+              style={{
+                display: "grid",
+                gridTemplateColumns: " 4rem repeat(2, 1fr)",
+                gridTemplateRows: "4rem repeat(3, 2.5rem)",
+                alignItems: "center",
+                textAlign: "left",
+                minWidth: "21rem",
+              }}>
+              <Card.Img
+                variant="top"
+                src={`./image/rune-image-${element.set_id}.png`}
+                style={{ width: "4rem" }}
+              />
+              <Card.Title
+                style={{
+                  fontSize: "1.4rem",
+                  fontWeight: "bold",
+                  gridArea: "1/2/2/4",
+                }}>
+                {findRuneTitle(element)}
+              </Card.Title>
+              <span>{pri_prefixFunc(element.pri_eff)}</span>
+              <span>
+                {element.prefix_eff[1] ? (
+                  pri_prefixFunc(element.prefix_eff)
+                ) : (
+                  <></>
+                )}
+              </span>
+              {secEffFunc(element.sec_eff)}
+            </Card>
+          </li>
+        );
+      }
     });
   }
-  return <div className="rune-list-container">{list}</div>;
+  return (
+    <div style={{ width: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "no-wrap",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+        <Form.Select
+          aria-label="Default select example"
+          style={{ width: "6.1rem", marginBottom: "1rem" }}
+          onChange={(event) => {
+            setView(event.currentTarget.value);
+            setPage(1);
+          }}>
+          <option value="10">10개</option>
+          <option value="50">50개</option>
+          <option value="100">100개</option>
+        </Form.Select>
+        <Pagination
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClick={() => {
+            document.querySelectorAll(".page-link").forEach((element) => {
+              element.classList.remove("active");
+            });
+          }}>
+          <Pagination.First
+            onClick={() => {
+              setPage(1);
+            }}
+          />
+          <Pagination.Prev
+            onClick={() => {
+              if (1 <= page - 10) {
+                setPage(pageGroupFirst - 1);
+              }
+            }}
+          />
+          {pageControl}
+          <Pagination.Next
+            onClick={() => {
+              if (page + 10 < Math.ceil(runeList.length / view)) {
+                setPage(pageGroupLast + 1);
+              }
+            }}
+          />
+          <Pagination.Last
+            onClick={() => {
+              setPage(Math.ceil(runeList.length / view));
+            }}
+          />
+        </Pagination>
+      </div>
+      <div className="rune-list-container">{list}</div>;
+    </div>
+  );
 }
 
 function findRuneTitle(element) {
