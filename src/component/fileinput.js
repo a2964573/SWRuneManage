@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 
 function FormFileExample(props) {
@@ -7,6 +8,7 @@ function FormFileExample(props) {
         <InputGroup className="mb-3" style={{ width: "100%" }}>
           <Form.Control
             type="file"
+            style={{ fontSize: "1.6rem" }}
             onChange={(event) => {
               props.setFile(event.target.files[0]);
             }}
@@ -14,6 +16,7 @@ function FormFileExample(props) {
           <Button
             variant="outline-secondary"
             id="button-addon2"
+            style={{ fontSize: "1.6rem" }}
             onClick={() => {
               paresJson(props.file, props.setFile, props.setCheck);
             }}>

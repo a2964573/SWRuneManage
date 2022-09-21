@@ -4,6 +4,7 @@
 }
 html {
   font-size: 62.5%;
+  min-width: 440px;
 }
 .rune-list-container {
   width: 95%;
@@ -62,4 +63,9 @@ html {
 }
 .card span:nth-child(8) {
   grid-area: 4/3/5/4;
+}
+
+.pagination li a {
+  width: 2.8rem;
+  text-align: center;
 }

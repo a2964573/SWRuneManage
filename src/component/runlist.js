@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Form, Pagination } from "react-bootstrap";
 import { prefixList, setList, optionList } from "./data.js";
 
@@ -8,6 +8,24 @@ function HorizontalResponsiveExample(props) {
   let runeList = [];
   let list = [];
   let pageControl = [];
+
+  useEffect(() => {
+    document.querySelectorAll(".page-link").forEach((element) => {
+      element.classList.remove("active");
+    });
+    addActive(pageControl, page);
+  }, [pageControl]);
+
+  useEffect(() => {
+    const form = [
+      document.querySelector(".form-select"),
+      document.querySelector(".pagination"),
+    ];
+    let visibility = props.check ? "visible" : "hidden";
+    form.forEach((element) => {
+      element.style.visibility = visibility;
+    });
+  }, [props.check]);
 
   if (props.check) {
     props.file.runes.forEach((element) => {
@@ -43,6 +61,7 @@ function HorizontalResponsiveExample(props) {
         </Pagination.Item>
       );
     }
+
     runeList.forEach((element, index) => {
       if ((page - 1) * view < index && index <= page * view) {
         list.push(
@@ -89,22 +108,10 @@ function HorizontalResponsiveExample(props) {
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           flexWrap: "no-wrap",
-          justifyContent: "center",
           alignItems: "center",
         }}>
-        <Form.Select
-          aria-label="Default select example"
-          style={{ width: "6.1rem", marginBottom: "1rem" }}
-          onChange={(event) => {
-            setView(event.currentTarget.value);
-            setPage(1);
-          }}>
-          <option value="10">10개</option>
-          <option value="50">50개</option>
-          <option value="100">100개</option>
-        </Form.Select>
         <Pagination
           style={{
             width: "100%",
@@ -112,11 +119,7 @@ function HorizontalResponsiveExample(props) {
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-          }}
-          onClick={() => {
-            document.querySelectorAll(".page-link").forEach((element) => {
-              element.classList.remove("active");
-            });
+            marginBottom: "0",
           }}>
           <Pagination.First
             onClick={() => {
@@ -125,17 +128,17 @@ function HorizontalResponsiveExample(props) {
           />
           <Pagination.Prev
             onClick={() => {
-              if (1 <= page - 10) {
-                setPage(pageGroupFirst - 1);
-              }
+              1 <= page - 10
+                ? setPage(pageGroupFirst - 1)
+                : setPage(pageGroupFirst);
             }}
           />
           {pageControl}
           <Pagination.Next
             onClick={() => {
-              if (page + 10 < Math.ceil(runeList.length / view)) {
-                setPage(pageGroupLast + 1);
-              }
+              page + 10 < Math.ceil(runeList.length / view)
+                ? setPage(pageGroupLast + 1)
+                : setPage(pageGroupLast);
             }}
           />
           <Pagination.Last
@@ -144,6 +147,19 @@ function HorizontalResponsiveExample(props) {
             }}
           />
         </Pagination>
+        <Form.Select
+          aria-label="Default select example"
+          style={{
+            width: "6.1rem",
+          }}
+          onChange={(event) => {
+            setView(event.currentTarget.value);
+            setPage(1);
+          }}>
+          <option value="10">10개</option>
+          <option value="50">50개</option>
+          <option value="100">100개</option>
+        </Form.Select>
       </div>
       <div className="rune-list-container">{list}</div>;
     </div>
@@ -208,6 +224,26 @@ function secEffFunc(sec_eff) {
     });
   });
   return spanList;
+}
+
+function addActive(pageControl, page) {
+  document.querySelectorAll(".page-link").forEach((element) => {
+    element.classList.remove("active");
+  });
+  pageControl.forEach((element) => {
+    if (Number(element.key) === page) {
+      console.log("key: ", element.key, "page: ", page);
+      if (page % 10 !== 0) {
+        document
+          .querySelectorAll(".page-link")
+          [(page % 10) + 1].classList.add("active");
+        console.log("active");
+      } else {
+        document.querySelectorAll(".page-link")[11].classList.add("active");
+        console.log("active");
+      }
+    }
+  });
 }
 
 export default HorizontalResponsiveExample;
