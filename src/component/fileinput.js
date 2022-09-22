@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 
 function FormFileExample(props) {
+  let file = props.file;
   return (
     <>
       <Form.Group controlId="formFileSm" className="mb-3">
@@ -10,7 +10,7 @@ function FormFileExample(props) {
             type="file"
             style={{ fontSize: "1.6rem" }}
             onChange={(event) => {
-              props.setFile(event.target.files[0]);
+              file = event.target.files[0];
             }}
           />
           <Button
@@ -18,7 +18,9 @@ function FormFileExample(props) {
             id="button-addon2"
             style={{ fontSize: "1.6rem" }}
             onClick={() => {
-              paresJson(props.file, props.setFile, props.setCheck);
+              if (file) {
+                paresJson(file, props.setFile, props.setCheck);
+              }
             }}>
             등록하기
           </Button>

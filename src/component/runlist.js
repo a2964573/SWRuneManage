@@ -108,7 +108,7 @@ function HorizontalResponsiveExample(props) {
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           flexWrap: "no-wrap",
           alignItems: "center",
         }}>
@@ -232,15 +232,12 @@ function addActive(pageControl, page) {
   });
   pageControl.forEach((element) => {
     if (Number(element.key) === page) {
-      console.log("key: ", element.key, "page: ", page);
       if (page % 10 !== 0) {
         document
           .querySelectorAll(".page-link")
           [(page % 10) + 1].classList.add("active");
-        console.log("active");
       } else {
         document.querySelectorAll(".page-link")[11].classList.add("active");
-        console.log("active");
       }
     }
   });
